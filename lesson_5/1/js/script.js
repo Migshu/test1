@@ -7,7 +7,7 @@ let menu = document.querySelector('.menu'),
     div = document.querySelectorAll('.column div'),
     rompt = document.getElementById('prompt');
     
-bodyBg.style.backgroundImage = "url(../img/apple_true.jpg)";
+bodyBg.style.backgroundImage = "url(img/apple_true.jpg)";
 
 li.classList.add('menu-item');
 menu.insertBefore(menuItem[2], menuItem[1]);
