@@ -9,14 +9,16 @@ let startBtn = document.getElementById('start'),
     incomeValue = document.getElementsByClassName('income-value')[0],
     monthSavingsValue = document.getElementsByClassName('monthsavings-value')[0],
     yearSavingsValue = document.getElementsByClassName('yearsavings-value')[0],
-    approve = document.getElementsByTagName('button')[1],
-    calculate = document.getElementsByTagName('button')[2],
-    expenses = document.getElementsByClassName('expenses-item'),
-    optionalExpenses = document.querySelectorAll('.optionalexpenses'),
-    chooseIncome = document.querySelector('.choose-income'),
-    savings = document.querySelector('#savings'),
-    sum = document.querySelector('#sum'),
-    percent = document.querySelector('#percent'),
+    
+    expensesItem = document.getElementsByClassName('expenses-item'),
+    expensesBtn = document.getElementsByTagName('button')[0],
+    optionalExpensesBtn = document.getElementsByTagName('button')[1],
+    countBtn = document.getElementsByTagName('button')[2],
+    optionalExpensesItem = document.querySelectorAll('.optionalexpenses'),
+    iIncomeItem = document.querySelector('.choose-income'),
+    checkSavings = document.querySelector('#savings'),
+    sumValue = document.querySelector('.choose-sum'),
+    percentValue = document.querySelector('.choose-percent'),
     yearValue = document.querySelector('.year-value'),
     monthValue = document.querySelector('.month-value'),
     dayValue = document.querySelector('.day-value');
@@ -38,6 +40,34 @@ startBtn.addEventListener('click', function() {
     dayValue.value = new Date(Date.parse(time)).getDate();
 });
 
+expensesBtn.addEventListener('click', function () {
+    let sum = 0;
+    
+    for (let i = 0; i < expensesItem.length; i++) {
+        let a = expensesItem[i].value,
+            b = expensesItem[++i].value;
+
+        if ((typeof (a)) === 'string' && (typeof (a)) != null && (typeof (b)) != null &&
+            a != '' && b != '' && a.length < 50) {
+            console.log("Все верно!");
+            appData.expenses[a] = b;
+            sum += +b;
+        } else {
+            i = i - 1;
+        }
+    }
+    expensesValue.textContent = sum;
+});
+
+optionalExpensesBtn.addEventListener('click', function () {
+    for (let i = 0; i < optionalExpensesItem.length; i++) {
+        let opt = optionalExpensesItem[i].value;
+        appData.optionalExpenses[i] = opt;
+        optionalExpensesValue.textContent += appData.optionalExpenses[i] + ' ';
+    }
+});
+
+
 
 let appData = {
     budget: money,
@@ -46,37 +76,9 @@ let appData = {
     optionalExpenses: {},
     income: [],
     savings: true,
-    chooseExpenses: function () {
-        for (let i = 0; i < 2; i++) {
-            let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
-                b = +prompt("Во сколько обойдется?", "");
-
-            if ((typeof (a)) === 'string' && (typeof (a)) != null && (typeof (b)) != null &&
-                a != '' && b != '' && a.length < 50) {
-                console.log("expanses done");
-                appData.expenses[a] = b;
-            } else {
-                alert("Введено неверное значение! Будьте внимательны. Попробуйте еще раз)");
-                i--;
-            }
-        }
-    },
-    chooseOptExpenses: function () {
-        for (let i = 1; i < 4; i++) {
-            let a = prompt("Статья необязательных расходов", "");
-            if ((typeof (a)) === 'string' && (typeof (a)) != null &&
-                a != '' && a.length < 50) {
-                console.log("optExpenses done");
-                appData.optionalExpenses[i] = a;
-            } else {
-                alert("Введено неверное значение! Будьте внимательны. Попробуйте еще раз)");
-                i--;
-            }
-        }
-    },
+    
     detectDayBudget: function () {
         appData.daylyBudget = (appData.budget / 30).toFixed();
-        alert("Ваш бюджет на 1 день:" + " " + appData.daylyBudget + " рублей")
     },
     detectLevel: function () {
         if (appData.daylyBudget <= 100) {
@@ -95,7 +97,7 @@ let appData = {
                 percent = +prompt("Под какой процент?");
 
             appData.monthIncome = (save / 100 / 12 * percent).toFixed(2);
-            alert("Доход в меся с Вашего депозита: " + appData.monthIncome);
+            
         }
     },
     chooseIncome: function () {
@@ -108,7 +110,7 @@ let appData = {
                 appData.income.push(prompt('Может быть, что-то еще?', ''));
                 appData.income.sort();
             } else {
-                alert("Введено неверное значение! Будьте внимательны. Попробуйте еще раз)");
+                
                 i--;
             }
 
@@ -119,22 +121,15 @@ let appData = {
     }
 };
 
-function contaneAppData() {
-    for(let key in appData) {
-        console.log("Наша программа включает в себя данные: " + key);
-    }
-}
-
-contaneAppData();
-
 console.log(appData);
 
-let mass = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+// function contaneAppData() {
+//     for(let key in appData) {
+//         console.log("Наша программа включает в себя данные: " + key);
+//     }
+// }
 
-function showPrimNumber() {
-    for(let key of mass) {
-        console.log(key + " - Делители этого числа: 1 и " + key);
-    }
-}
+//contaneAppData();
 
-showPrimNumber();
+
+
