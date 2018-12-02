@@ -36,20 +36,18 @@ window.addEventListener('DOMContentLoaded', function() {
 
     //Timer 
 
-    let deadLine = '2018-12-31';
+    let deadLine = '2018-11-31';
 
     function getTimeRemaining(endtime) {
         let t = Date.parse(endtime) - Date.parse(new Date()),
         seconds = Math.floor((t/1000) % 60),
         minutes = Math.floor((t/1000/60) % 60),
-        hours = Math.floor((t/1000/60/60) % 24),
-        days = Math.floor((t/(1000*60*60*24)));
+        hours = Math.floor((t/(1000*60*60)));
             if (seconds < 10) seconds = '0' + seconds;
             if (minutes < 10) minutes = '0' + minutes;
             if (hours < 10) hours = '0' + hours;  
         return {
             'total' : t,
-            "days" : days,
             "hours" : hours,
             'minutes' : minutes,
             'seconds' : seconds
@@ -71,6 +69,9 @@ window.addEventListener('DOMContentLoaded', function() {
             seconds.textContent = t.seconds;
             if (t.total <= 0) {
                 clearInterval(timeInterval);
+                document.querySelector('.seconds').innerHTML = '00';
+                document.querySelector('.minutes').innerHTML = '00';
+                document.querySelector('.hours').innerHTML = '00';
             }
         }
     }
