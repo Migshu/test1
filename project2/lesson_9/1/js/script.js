@@ -83,27 +83,22 @@ window.addEventListener('DOMContentLoaded', function() {
     let container = document.querySelector('body'),
         more = document.querySelector('.more'),
         overlay = document.querySelector('.overlay'),
-        close = document.querySelector('.popup-close'),
-        descriptionBtn = document.querySelector('.description-btn');
+        close = document.querySelector('.popup-close');
         
     container.addEventListener('click', function(e) {
         if(
-            e.target && e.target.classList('more') || e.target.classList('description-btn')) {
+            e.target && e.target.classList.contains('more') || e.target.classList.contains('description-btn')) {
             overlay.style.display = 'block';
             more.classList.add('more-splash');
             document.body.style.overflow = 'hidden';
         }
-    });
 
-    // more.addEventListener('click', function() {
-    //     overlay.style.display = 'block';
-    //     this.classList.add('more-splash');
-    //     document.body.style.overflow = 'hidden';
-    // });
-    close.addEventListener('click', function() {
-        overlay.style.display = 'none';
-        more.classList.remove('more-splash');
-        document.body.style.overflow = '';
+        if(
+            e.target && e.target.classList.contains('popup-close')) {
+                overlay.style.display = 'none';
+                more.classList.remove('more-splash');
+                document.body.style.overflow = '';
+        }
     });
 });
 
