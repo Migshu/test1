@@ -1,7 +1,6 @@
 window.addEventListener('DOMContentLoaded',  () => {
 
     'use strict';
-
     let tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
@@ -38,7 +37,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 
     let deadLine = '2019-01-01';
 
-    endtime => {
+    function getTimeRemaining(endtime) {
         let t = Date.parse(endtime) - Date.parse(new Date()),
         seconds = Math.floor((t/1000) % 60),
         minutes = Math.floor((t/1000/60) % 60),
@@ -55,14 +54,13 @@ window.addEventListener('DOMContentLoaded',  () => {
           
     }
 
-    (id, endtime) => {
+    let setClock = (id, endtime) => {
         let timer = document.getElementById(id),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),
             seconds = timer.querySelector('.seconds'),
-            timeInterval = setInterval(updateClock, 1000);
-
-        function updateClock() {
+            
+            updateClock = () => {
             let t = getTimeRemaining(endtime);
             hours.textContent = t.hours;
             minutes.textContent = t.minutes;
@@ -74,6 +72,7 @@ window.addEventListener('DOMContentLoaded',  () => {
                 document.querySelector('.hours').innerHTML = '00';
             }
         }
+        let timeInterval = setInterval(updateClock, 1000);
     }
 
     setClock('timer', deadLine);
@@ -82,8 +81,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 
     let container = document.querySelector('body'),
         more = document.querySelector('.more'),
-        overlay = document.querySelector('.overlay'),
-        close = document.querySelector('.popup-close');
+        overlay = document.querySelector('.overlay');
         
     container.addEventListener('click', (e) => {
         if(
@@ -123,60 +121,56 @@ window.addEventListener('DOMContentLoaded',  () => {
         });
 
     function sendForm(mainForm) {
-
         mainForm.addEventListener('submit', function(event) {
             event.preventDefault();
                 mainForm.appendChild(statusMessage);
                 let formData = new FormData(mainForm);
 
-                function postData(data) {
-                    return new Promise(function(resolve,reject) {
-                        let request = new XMLHttpRequest();
-                        request.open('POST', 'server.php');
-                        request.setRequestHeader ('Content-Type', 'application/json; charset=utf-8');
-                        request.onreadystatechange = function() {
-                            if (request.readyState < 4) {
-                                resolve()
-                            } else if(request.readyState === 4) {
-                                if (request.status == 200 && request.status < 300)
-                                    resolve()
-                                } else {
-                                    reject()
-                                }
-                        }
-                    }
+                let obj = {};
+                formData.forEach(function(value, key) {
+                    obj[key] = value;
+                });
+                let json = JSON.stringify(obj);
 
-                    request.send(data);
-                })
-            }
-            
-            function clearInput() {
+            function postData(data) {
+
+                return new Promise(function(resolve,reject) {
+                    let request = new XMLHttpRequest();
+
+                    request.open('POST', 'server.php');
+
+                    request.setRequestHeader ('Content-Type', 'application/json; charset=utf-8');
+
+                    request.addEventListener('readystatechange', function() {
+                        if (request.readyState < 4) {
+                            resolve()
+                        } else if(request.readyState === 4 && request.status == 200) {
+                            resolve()
+                        } else {
+                            reject()
+                        }
+                    });
+                    
+                    request.send(json);
+                
+                });
+            } //End postData
+
+            function clerInput() {
                 for (let i = 0; i < input.length; i++) {
                     input[i].value = '';
                 }
             }
-            
-            postData(formData)
-                .then(()=>statusMessage.innerHTML = message.loading)
-                .then(()=> {
-                    tha
-                })
 
-            let obj = {};
-            formData.forEach(function(value, key) {
-                obj[key] = value;
-            });
-            let json = JSON.stringify(obj);
-    
-            request.send(json);
-    
-           
-            });
-    
-            
+            postData(formData)
+                .then(() => statusMessage.innerHTML = message.loading)
+                .then(() => statusMessage.innerHTML = message.success)
+                .catch(() => statusMessage.innerHTML = message.failure)
+                .then(clerInput)
         });
     }
-        
+
+    // sendForm(formData);
 
     inp[1].addEventListener('input', function() {
         this.value = this.value.replace (/[^0-9+]/g, '');
