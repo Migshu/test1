@@ -120,11 +120,15 @@ window.addEventListener('DOMContentLoaded',  () => {
             this.value = this.value.replace (/[^0-9+]/g, '');
         });
 
-    function sendForm(mainForm) {
-        mainForm.addEventListener('submit', function(event) {
+        inp[1].addEventListener('input', function() {
+            this.value = this.value.replace (/[^0-9+]/g, '');
+        });
+
+    function sendForm(elem) {
+        elem.addEventListener('submit', function(event) {
             event.preventDefault();
-                mainForm.appendChild(statusMessage);
-                let formData = new FormData(mainForm);
+            elem.appendChild(statusMessage);
+                let formData = new FormData(elem);
 
                 let obj = {};
                 formData.forEach(function(value, key) {
@@ -166,49 +170,12 @@ window.addEventListener('DOMContentLoaded',  () => {
                 .then(() => statusMessage.innerHTML = message.loading)
                 .then(() => statusMessage.innerHTML = message.success)
                 .catch(() => statusMessage.innerHTML = message.failure)
-                .then(clerInput)
+                .then(clerInput);
         });
     }
 
-    // sendForm(formData);
-
-    inp[1].addEventListener('input', function() {
-        this.value = this.value.replace (/[^0-9+]/g, '');
-    });
-
-    form.addEventListener('submit', function(event) {
-       
-        event.preventDefault();
-        form.appendChild(statusMessage);
-
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader ('Content-Type', 'application/json; charset=utf-8');
-
-        let formData = new FormData(form);
-        
-        let obj = {};
-        formData.forEach(function(value, key) {
-            obj[key] = value;
-        });
-        let json = JSON.stringify(obj);
-
-        request.send(json);
-
-        request.addEventListener('readystatechange', function() {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = message.loading;
-            } else if(request.readyState === 4 && request.status == 200) {
-                statusMessage.innerHTML = message.success;
-            } else {
-                statusMessage.innerHTML = message.failure;
-            }
-        });
-
-        for (let i = 0; i < inp.length; i++) {
-            inp[i].value = '';
-        }
-    });
+    sendForm(mainForm);
+    sendForm(form);
 
 });
 
