@@ -58,20 +58,27 @@ function form() {
                 });
             } //End postData
 
-            function clerInput() {
+            function clearInput() {
                 for (let i = 0; i < input.length; i++) {
                     input[i].value = '';
                 }
+                
             }
-
+            
             postData(formData)
                 .then(() => statusMessage.innerHTML = message.loading)
                 .then(() => statusMessage.innerHTML = message.success)
                 .catch(() => statusMessage.innerHTML = message.failure)
-                .then(clerInput);
+                .then(clearInput);
         });
+        function clearInp() {
+            statusMessage.textContent = "";
+        }
+        input[0].oninput = clearInp;
+        inp[0].oninput = clearInp;
+        inp[1].oninput = clearInp;
     }
-
+    
     sendForm(mainForm);
     sendForm(form);
 }

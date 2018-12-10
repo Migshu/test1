@@ -1,7 +1,9 @@
 function modal() {
     let container = document.querySelector('body'),
         more = document.querySelector('.more'),
-        overlay = document.querySelector('.overlay');
+        overlay = document.querySelector('.overlay'),
+        mForm = document.querySelector('.main-form'),
+        mInput = mForm.getElementsByTagName('input');
         
     container.addEventListener('click', (e) => {
         if(
@@ -16,6 +18,7 @@ function modal() {
                 overlay.style.display = 'none';
                 more.classList.remove('more-splash');
                 document.body.style.overflow = '';
+                mInput[0].value = '';
         }
     });
 }

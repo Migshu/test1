@@ -219,7 +219,7 @@ function form() {
       } //End postData
 
 
-      function clerInput() {
+      function clearInput() {
         for (var i = 0; i < input.length; i++) {
           input[i].value = '';
         }
@@ -231,8 +231,16 @@ function form() {
         return statusMessage.innerHTML = message.success;
       }).catch(function () {
         return statusMessage.innerHTML = message.failure;
-      }).then(clerInput);
+      }).then(clearInput);
     });
+
+    function clearInp() {
+      statusMessage.textContent = "";
+    }
+
+    input[0].oninput = clearInp;
+    inp[0].oninput = clearInp;
+    inp[1].oninput = clearInp;
   }
 
   sendForm(mainForm);
@@ -253,7 +261,9 @@ module.exports = form;
 function modal() {
   var container = document.querySelector('body'),
       more = document.querySelector('.more'),
-      overlay = document.querySelector('.overlay');
+      overlay = document.querySelector('.overlay'),
+      mForm = document.querySelector('.main-form'),
+      mInput = mForm.getElementsByTagName('input');
   container.addEventListener('click', function (e) {
     if (e.target && e.target.classList.contains('more') || e.target.classList.contains('description-btn')) {
       overlay.style.display = 'block';
@@ -265,6 +275,7 @@ function modal() {
       overlay.style.display = 'none';
       more.classList.remove('more-splash');
       document.body.style.overflow = '';
+      mInput[0].value = '';
     }
   });
 }
