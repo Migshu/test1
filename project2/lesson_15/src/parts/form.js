@@ -62,6 +62,9 @@ function form() {
                 for (let i = 0; i < input.length; i++) {
                     input[i].value = '';
                 }
+                for (let i = 0; i < inp.length; i++) {
+                    inp[i].value = '';
+                }
                 
             }
             

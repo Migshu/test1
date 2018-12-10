@@ -223,6 +223,10 @@ function form() {
         for (var i = 0; i < input.length; i++) {
           input[i].value = '';
         }
+
+        for (var _i = 0; _i < inp.length; _i++) {
+          inp[_i].value = '';
+        }
       }
 
       postData(formData).then(function () {
